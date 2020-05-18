@@ -1,14 +1,14 @@
-import 'package:final_project/pages/shakespearequotes.dart';
+import 'package:final_project/pages/descartesquotes.dart';
 import 'package:flutter/material.dart';
 import '../bloc.navigation_bloc/navigation_bloc.dart';
 import 'package:rect_getter/rect_getter.dart';
 
-class Shakespeare extends StatefulWidget with NavigationStates{
+class Descartes extends StatefulWidget with NavigationStates{
   @override
-  _ShakespeareState createState() => _ShakespeareState();
+  _DescartesState createState() => _DescartesState();
 }
 
-class _ShakespeareState extends State<Shakespeare> {
+class _DescartesState extends State<Descartes> {
   final Duration animationDuration = Duration(milliseconds: 300);
   final Duration delay = Duration(milliseconds: 300);
   GlobalKey rectGetterKey = RectGetter.createGlobalKey();
@@ -25,7 +25,7 @@ class _ShakespeareState extends State<Shakespeare> {
 
   void _goToNextPage() {
     Navigator.of(context)
-        .push(FadeRouteBuilder(page: ShakespeareQuotes()))
+        .push(FadeRouteBuilder(page: DescartesQuotes()))
         .then((_) => setState(() => rect = null));
   }
 
@@ -37,7 +37,7 @@ class _ShakespeareState extends State<Shakespeare> {
           appBar: AppBar(
             centerTitle: true,
             backgroundColor: Colors.black87,
-            title: Text('Shakespeare', style: TextStyle(
+            title: Text('Descartes', style: TextStyle(
                 fontStyle: FontStyle.normal,
                 fontSize: 25,
                 color: Colors.white,
@@ -66,7 +66,7 @@ class _ShakespeareState extends State<Shakespeare> {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(50),
                       child: Image(
-                        image: AssetImage('images/shakespeare.jpg'),
+                        image: AssetImage('images/descartes.jpg'),
                       ),
                     ),
                   ),
@@ -74,18 +74,18 @@ class _ShakespeareState extends State<Shakespeare> {
                     constraints: BoxConstraints(minWidth:5, maxWidth: 400),
                     alignment: Alignment.centerLeft,
                       child: Text('''
-                        Name: William Shakespeare
-                        Born: April 26, 1564
-                        Nationality: English
-                        Occupation:	Poet, actor.
-                        FunFact: Nobody knows what Shakespeare 
-                        did between 1585 and 1592.To the dismay 
-                        of his biographers, Shakespeare 
-                        disappears from the historical record 
-                        between 1585, when his twins’ baptism 
-                        was recorded, and 1592, when the 
-                        playwright Robert Greene denounced him 
-                        in a pamphlet as an “upstart crow.” 
+                        Name: René Descartes
+                        Born: March 31, 1596
+                        Nationality: French
+                        Occupation:	Philosopher and scientist
+                        FunFact: Descartes was born in minor 
+                        French nobility. His mother died soon 
+                        after giving birth to him, his father 
+                        remarried and he was raised by his 
+                        maternal grandmother. His religious 
+                        views are still debated, as he claimed 
+                        to have been a Catholic but was accused 
+                        of actually having atheist beliefs.
                       ''', 
                       style: TextStyle(
                         color: Colors.white, 

@@ -123,6 +123,14 @@ class _SideBarState extends State<SideBar> with SingleTickerProviderStateMixin<S
                           BlocProvider.of<NavigationBloc>(context).add(NavigationEvents.ShakespeareClickedEvent);
                         },
                       ),
+                      MenuItem(
+                        icon: Icons.person,
+                        title: "Descartes",
+                        onTap: () {
+                          onIconPressed();
+                          BlocProvider.of<NavigationBloc>(context).add(NavigationEvents.DescartesClickedEvent);
+                        },
+                      ),
                       Divider(
                         height: 64,
                         thickness: 0.5,

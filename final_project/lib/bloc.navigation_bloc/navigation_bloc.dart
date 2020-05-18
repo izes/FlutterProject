@@ -1,12 +1,14 @@
 import 'package:bloc/bloc.dart';
 import '../pages/bukowski.dart';
 import '../pages/shakespeare.dart';
+import '../pages/descartes.dart';
 import '../pages/homepage.dart';
 
 enum NavigationEvents {
   HomePageClickedEvent,
   BukowskiClickedEvent,
-  ShakespeareClickedEvent
+  ShakespeareClickedEvent,
+  DescartesClickedEvent
 }
 
 abstract class NavigationStates {}
@@ -26,6 +28,9 @@ class NavigationBloc extends Bloc<NavigationEvents, NavigationStates> {
         break;
       case NavigationEvents.ShakespeareClickedEvent:
         yield Shakespeare();
+        break;
+      case NavigationEvents.DescartesClickedEvent:
+        yield Descartes();
         break;
     }
   }
