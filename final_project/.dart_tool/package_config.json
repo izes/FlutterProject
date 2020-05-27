@@ -188,6 +188,18 @@
       "languageVersion": "2.6"
     },
     {
+      "name": "sqflite",
+      "rootUri": "file:///Users/izes/Developer/flutter/.pub-cache/hosted/pub.dartlang.org/sqflite-1.3.0+2",
+      "packageUri": "lib/",
+      "languageVersion": "2.7"
+    },
+    {
+      "name": "sqflite_common",
+      "rootUri": "file:///Users/izes/Developer/flutter/.pub-cache/hosted/pub.dartlang.org/sqflite_common-1.0.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.7"
+    },
+    {
       "name": "stack_trace",
       "rootUri": "file:///Users/izes/Developer/flutter/.pub-cache/hosted/pub.dartlang.org/stack_trace-1.9.3",
       "packageUri": "lib/",
@@ -204,6 +216,12 @@
       "rootUri": "file:///Users/izes/Developer/flutter/.pub-cache/hosted/pub.dartlang.org/string_scanner-1.0.5",
       "packageUri": "lib/",
       "languageVersion": "2.0"
+    },
+    {
+      "name": "synchronized",
+      "rootUri": "file:///Users/izes/Developer/flutter/.pub-cache/hosted/pub.dartlang.org/synchronized-2.2.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.6"
     },
     {
       "name": "term_glyph",
@@ -236,7 +254,7 @@
       "languageVersion": "2.1"
     }
   ],
-  "generated": "2020-05-13T23:36:15.342726Z",
+  "generated": "2020-05-27T19:32:56.837453Z",
   "generator": "pub",
-  "generatorVersion": "2.9.0-5.0.dev.flutter-4da5b40fb6"
+  "generatorVersion": "2.9.0-7.0.dev.flutter-092ed38a87"
 }

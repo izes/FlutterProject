@@ -1,10 +1,36 @@
 import '../bloc.navigation_bloc/navigation_bloc.dart';
 import 'package:flutter/material.dart';
+import '../models/user.dart';
+import 'package:final_project/databaseHelper.dart';
 
-class HomePage extends StatelessWidget with NavigationStates {
+class HomePage extends StatefulWidget with NavigationStates{
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  final dbHelper = DataBaseHelper.instance;
+  List<User> user = [];
+
+  //Insert Controller
+  TextEditingController userNameController = TextEditingController();
+
+  //Query controller
+  TextEditingController queryController = TextEditingController();
+  
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  
+  void _showMessageScaffold(String message){
+    _scaffoldKey.currentState.showSnackBar(
+      SnackBar(content: Text(message),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: Colors.black87,
@@ -39,6 +65,7 @@ class HomePage extends StatelessWidget with NavigationStates {
                 borderRadius: const BorderRadius.all(const Radius.circular(6.0)),
               ),
               child: new TextFormField(
+                controller: userNameController,
                 decoration: InputDecoration(
                 hintText: 'Enter your username',
                 contentPadding: new EdgeInsets.all(10.0),
@@ -61,7 +88,10 @@ class HomePage extends StatelessWidget with NavigationStates {
               children: <Widget>[
                 new Expanded(
                   child: RaisedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      String userName = userNameController.text;
+                      _insert(userName);
+                    },
                     textColor: Colors.white,
                     child: const Text('Submit', style: TextStyle(fontSize: 20)),
                     padding: const EdgeInsets.all(10.0),
@@ -75,5 +105,14 @@ class HomePage extends StatelessWidget with NavigationStates {
         ),
       ),
     );
+  }
+
+  void _insert(userName) async {
+    Map<String, dynamic> row = {      
+      DataBaseHelper.colUserName: userName,
+    };
+    User user =  User.fromMap(row);
+    final id = await dbHelper.insert(user);
+    _showMessageScaffold('User id# $id');
   }
 }
