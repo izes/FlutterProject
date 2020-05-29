@@ -3,26 +3,24 @@ import 'package:flutter/material.dart';
 import '../models/user.dart';
 import 'package:final_project/databaseHelper.dart';
 
-class HomePage extends StatefulWidget with NavigationStates{
+class HomePage extends StatefulWidget with NavigationStates {
   @override
   _HomePageState createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
   final dbHelper = DataBaseHelper.instance;
-  List<User> user = [];
+  List<User> userByName = [];
 
-  //Insert Controller
-  TextEditingController userNameController = TextEditingController();
+  //Validation Controller
+  TextEditingController _validationController = TextEditingController();
 
-  //Query controller
-  TextEditingController queryController = TextEditingController();
-  
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-  
-  void _showMessageScaffold(String message){
+
+  void _showMessageScaffold(String message) {
     _scaffoldKey.currentState.showSnackBar(
-      SnackBar(content: Text(message),
+      SnackBar(
+        content: Text(message),
       ),
     );
   }
@@ -34,7 +32,9 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: Colors.black87,
-        title: Text('Thinkers', style: TextStyle(
+        title: Text(
+          'Thinkers',
+          style: TextStyle(
             fontStyle: FontStyle.normal,
             fontSize: 25,
             color: Colors.white,
@@ -44,58 +44,94 @@ class _HomePageState extends State<HomePage> {
       body: new Container(
         decoration: new BoxDecoration(
           gradient: LinearGradient(
-            begin: Alignment.topRight,
-            end: Alignment.bottomLeft,
-            colors: [Colors.black, Colors.grey]
-          ),
+              begin: Alignment.topRight,
+              end: Alignment.bottomLeft,
+              colors: [Colors.black, Colors.grey]),
           image: new DecorationImage(
-          fit: BoxFit.fill,
-          colorFilter: new ColorFilter.mode(Colors.black.withOpacity(0.03), BlendMode.dstATop),
-          image: AssetImage('images/logo.jpeg')
-          ),
+              fit: BoxFit.fill,
+              colorFilter: new ColorFilter.mode(
+                  Colors.black.withOpacity(0.03), BlendMode.dstATop),
+              image: AssetImage('images/logo.jpeg')),
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: <Widget>[
-            new Container(
-              margin: new EdgeInsets.only(left:20.0, right: 20.0, bottom: 15.0),
+            //Registros no banco de dados
+            Container(
+              height: 100,
+              child: ListView.builder(
+                padding: EdgeInsets.all(10),
+                itemCount: userByName.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return Container(
+                    child: Center(
+                      child: Text(
+                        '${userByName[index].id} : ${userByName[index].userName}',
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+            //TextBox
+            Container(
+              margin:
+                  new EdgeInsets.only(left: 20.0, right: 20.0, bottom: 15.0),
               decoration: BoxDecoration(
-                color: new Color.fromARGB(255,240,240,240),
+                color: new Color.fromARGB(255, 240, 240, 240),
                 border: new Border.all(width: 1.2, color: Colors.black12),
-                borderRadius: const BorderRadius.all(const Radius.circular(6.0)),
+                borderRadius:
+                    const BorderRadius.all(const Radius.circular(6.0)),
               ),
               child: new TextFormField(
-                controller: userNameController,
+                controller: _validationController,
                 decoration: InputDecoration(
-                hintText: 'Enter your username',
-                contentPadding: new EdgeInsets.all(10.0),
-                border: InputBorder.none,
-            ),
-          ),
-        ),
-          Container(
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                colors: <Color>[
-                  Color(0xFF000000),
-                  Color(0xFFCCCCCC),
-                  Color(0xFFFFFFFF),
-                ],
+                  hintText: 'Enter your username',
+                  contentPadding: new EdgeInsets.all(10.0),
+                  border: InputBorder.none,
+                ),
               ),
             ),
-            margin: new EdgeInsets.only(left: 20.0, right: 20.0, bottom: 20.0),
-            child: new Row(
-              children: <Widget>[
-                new Expanded(
-                  child: RaisedButton(
-                    onPressed: () {
-                      String userName = userNameController.text;
-                      _insert(userName);
-                    },
-                    textColor: Colors.white,
-                    child: const Text('Submit', style: TextStyle(fontSize: 20)),
-                    padding: const EdgeInsets.all(10.0),
-                    color: Colors.transparent,
+            //Button
+            Container(
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  colors: <Color>[
+                    Color(0xFF000000),
+                    Color(0xFFCCCCCC),
+                    Color(0xFFFFFFFF),
+                  ],
+                ),
+              ),
+              margin:
+                  new EdgeInsets.only(left: 20.0, right: 20.0, bottom: 20.0),
+              child: new Row(
+                children: <Widget>[
+                  new Expanded(
+                    child: RaisedButton(
+                      onPressed: () {
+                        setState(() {
+                          _queryByName(_validationController.text);
+                        });
+
+                        if (_validationController.text.isEmpty == true) {
+                          _showMessageScaffold('User cant be null');
+                        } else {
+                          if (_checkData(_validationController.text) == "") {
+                            String userName = _validationController.text;
+                            _insert(userName);
+                            _showMessageScaffold(
+                                'New user. New register completed');
+                          } else {
+                            _showMessageScaffold('User Validated');
+                          }
+                        }
+                      },
+                      textColor: Colors.white,
+                      child:
+                          const Text('Submit', style: TextStyle(fontSize: 20)),
+                      padding: const EdgeInsets.all(10.0),
+                      color: Colors.transparent,
                     ),
                   ),
                 ],
@@ -108,11 +144,29 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _insert(userName) async {
-    Map<String, dynamic> row = {      
+    Map<String, dynamic> row = {
       DataBaseHelper.colUserName: userName,
     };
-    User user =  User.fromMap(row);
+    User user = User.fromMap(row);
     final id = await dbHelper.insert(user);
     _showMessageScaffold('User id# $id');
+  }
+
+  void _queryByName(name) async {
+    final allRows = await dbHelper.queryRows(name);
+    userByName.clear();
+    allRows.forEach((row) => userByName.add(User.fromMap(row)));
+    setState(() {});
+  }
+
+  String _checkData(name) {
+    String result = "";
+    for (var i = 0; i < userByName.length + 1; i++) {
+      if (userByName[i].userName == _validationController.text) {
+        result = _validationController.text;
+        _showMessageScaffold('Register found');
+      }
+    }
+    return result;
   }
 }

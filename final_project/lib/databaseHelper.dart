@@ -1,6 +1,6 @@
 import 'dart:io';
 import './models/user.dart';
-
+import './models/author.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
@@ -56,26 +56,13 @@ class DataBaseHelper{
   }
 
   // All od the rows are returned as a list of maps, where each map is a keu-value list of columns 
-  // Future<List<Map<String, dynamic>>> queryAllRows() async {
-  //   Database db = await instance.database;
-  //   return await db.query(table);
-  // }
+  Future<List<Map<String, dynamic>>> queryAllRows() async {
+    Database db = await instance.database;
+    return await db.query(table);
+  }
 
   Future<List<Map<String, dynamic>>> queryRows(name) async {
      Database db = await instance.database;
-     return await db.query(table, where: "$colUserName LIKE '%$name%'");
-   }
-
-  //   Future<int> update(User user) async {
-  //   Database db = await instance.database;
-  //   int userId = user.toMap()['userId'];
-  //   return await db.
-  //     update(table, user.toMap(), where: '$colUserId = ?', whereArgs: [userId]);
-  // }
-
-  // //Delete row based on id
-  // Future<int> delete(int userId) async {
-  //   Database db = await instance.database;
-  //   return await db.delete(table, where: '$colUserId = ?', whereArgs: [userId]);
-  // }
+     return await db.query(table, where: "$colUserName LIKE '$name'");
+    }
 }
